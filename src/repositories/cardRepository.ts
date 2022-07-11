@@ -119,6 +119,18 @@ export async function update(id: number, cardData: CardUpdateData) {
   );
 }
 
+export async function activateCardDb(cardId :number, encryptedPassword :string) {
+  
+   const result = await connection.query(`
+   UPDATE cards
+   SET  password = $1
+   WHERE
+   id = $2
+   `,[encryptedPassword, cardId])
+   console.log(result);
+   
+}
+
 export async function remove(id: number) {
   connection.query<any, [number]>("DELETE FROM cards WHERE id=$1", [id]);
 }
