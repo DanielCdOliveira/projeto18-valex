@@ -1,16 +1,9 @@
 import * as companyRepository from "../repositories/companyRepository.js"
 
-// function notFoundError(entity) {
-// 	return {
-// 		type: "error_not_found",
-// 		message: `Could not find specified "${entity}"!`
-// 	};
-// }
-
-export default async function tokenValidation(apiKey :any) {
+export default async function tokenValidation(apiKey ) {
     if (!apiKey) {
         throw {
-            type: "invalid_token",
+            type: "unauthorized",
             message: " x-api-key not found"
         };
     }
@@ -18,12 +11,9 @@ export default async function tokenValidation(apiKey :any) {
     const company = await companyRepository.findByApiKey(token)
     if(!company){
         throw {
-            type: "invalid_token",
+            type: "unauthorized",
             message: " x-api-key not found"
         };
     }
-    console.log("2");
-    
     return company
-
 }
