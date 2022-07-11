@@ -15,7 +15,9 @@ export async function createCard(req: Request, res: Response) {
 
 export async function activateCard(req: Request, res: Response) {
     const cardInfo = req.body
-    await cardServices.checkCardActivation(cardInfo)
+    const cardDb = await cardServices.validCard(cardInfo)
+    await cardServices.checkCardActivated(cardDb)
+    await cardServices.checkCardSecurityCode(cardInfo, cardDb)
     await cardServices.activateCard(cardInfo)
     res.sendStatus(200)
 

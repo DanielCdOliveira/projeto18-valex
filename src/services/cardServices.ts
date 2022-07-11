@@ -39,8 +39,7 @@ export async function createCard(employee: any, type: any) {
     const expirationDate = dayjs().add(5, 'years').format('MM/YY')
     return { employeeId: employee.id, number, cardholderName: cardholderName.join(" "), expirationDate, securityCode, type, isVirtual: false, isBlocked: true }
 }
-
-export async function checkCardActivation(cardInfo: any) {
+export async function validCard(cardInfo:any) {
     const card = await cardRepository.findById(cardInfo.cardId)
     if (!card) {
         throw {
@@ -57,16 +56,19 @@ export async function checkCardActivation(cardInfo: any) {
             message: "expired card"
         }
     }
-    if (card.password) {
+    return card
+}
+export async function checkCardActivated(cardDb: any) {
+    if (cardDb.password) {
         throw {
             type: "unauthorized",
             message: "card already activated"
         }
     }
+}
+export async function checkCardSecurityCode(cardInfo :any,cardDb: any) {
     const cryptr = new Cryptr(process.env.CRYPTKEY)
-    const securityCode = cryptr.decrypt(card.securityCode)
-    console.log(securityCode);
-    
+    const securityCode = cryptr.decrypt(cardDb.securityCode)
     if (securityCode !== cardInfo.securityCode) {
         throw {
             status: 401,
@@ -74,6 +76,7 @@ export async function checkCardActivation(cardInfo: any) {
         }
     }
 }
+
 export async function activateCard(cardInfo: any) {
     const cryptr = new Cryptr(process.env.CRYPTKEY)
     const encryptedPassword = cryptr.encrypt(cardInfo.password)
