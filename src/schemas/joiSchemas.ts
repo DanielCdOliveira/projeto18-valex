@@ -10,3 +10,9 @@ export const rechargeSchema = joi.object({
    cardId: joi.number().min(1).required(),
    amount: joi.number().min(1).required()
   });
+  export const purchaseSchema = joi.object({
+    cardId: joi.number().min(1).required(),
+    businessId: joi.number().min(1).required(),
+    amount: joi.number().min(1).required(),
+    password: joi.string().pattern(new RegExp("[0-9]")).min(4).max(4).required(),
+   });

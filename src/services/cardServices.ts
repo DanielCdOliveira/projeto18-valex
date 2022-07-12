@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 import Cryptr from "cryptr"
 import * as cardRepository from "../repositories/cardRepository.js"
 import * as employeeRepository from "../repositories/employeeRepository.js"
-
+import * as rechargeRepository from "../repositories/rechargeRepository.js"
 export async function checkCard(employeeId: number, type) {
     const employee = await employeeRepository.findById(employeeId)
     if (!employee) {
@@ -114,6 +114,6 @@ export async function changeBlocked(cardInfo: any, blockedCard: boolean) {
     await cardRepository.changeBlocked(cardInfo.cardId,blockedCard )
 }
 export async function insertRecharge(cardInfo: any) {
-    await cardRepository.insertRecharge(cardInfo)
+    await rechargeRepository.insert(cardInfo)
 }
 
