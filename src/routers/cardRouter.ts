@@ -10,7 +10,7 @@ cardRouter.post("/card/creation",verifyToken ,cardController.createCard)
 cardRouter.post("/card/activate",schemaVerifier(activateSchema) ,cardController.activateCard)
 cardRouter.put("/card/block" ,cardController.blockCard)
 cardRouter.put("/card/unlock" ,cardController.unlockCard)
-cardRouter.post("/card/recharge",schemaVerifier(rechargeSchema),cardController.rechargeCard)
+cardRouter.post("/card/recharge",verifyToken,schemaVerifier(rechargeSchema),cardController.rechargeCard)
 
 
 export default cardRouter
