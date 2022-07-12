@@ -6,7 +6,7 @@ export const activateSchema = joi.object({
   password: joi.string().pattern(new RegExp("[0-9]")).min(4).max(4).required(),
 });
 
-export const loginSchema = joi.object({
-    email: joi.string().email().required(),
-    password: joi.string().min(1).required(),
+export const rechargeSchema = joi.object({
+   cardId: joi.number().min(1).required(),
+   amount: joi.number().min(1).required()
   });

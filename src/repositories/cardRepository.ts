@@ -119,27 +119,30 @@ export async function update(id: number, cardData: CardUpdateData) {
   );
 }
 
-export async function activateCardDb(cardId :number, encryptedPassword :string) {
-  
-   const result = await connection.query(`
+export async function activateCardDb(cardId: number, encryptedPassword: string) {
+
+  await connection.query(`
    UPDATE cards
    SET  password = $1
    WHERE
    id = $2
-   `,[encryptedPassword, cardId])
-   console.log(result);
-   
+   `, [encryptedPassword, cardId])
 }
 
-export async function changeBlocked(cardId :number, blockedCard :boolean) {
-  console.log("query", blockedCard);
-  
-  const result = await connection.query(`
+export async function changeBlocked(cardId: number, blockedCard: boolean) {
+  await connection.query(`
   UPDATE cards
   SET  "isBlocked" = $1
   WHERE
   id = $2
-  `,[blockedCard, cardId])
+  `, [blockedCard, cardId])
+}
+export async function insertRecharge(cardInfo: any) {
+  await connection.query(`
+  INSERT INTO recharges
+  ("cardId",amount)
+  VALUES ($1,$2)
+  `,[cardInfo.cardId, cardInfo.amount])
 }
 export async function remove(id: number) {
   connection.query<any, [number]>("DELETE FROM cards WHERE id=$1", [id]);

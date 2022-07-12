@@ -4,7 +4,6 @@ import *  as cardServices from "../services/cardServices.js"
 import * as cardRepository from "../repositories/cardRepository.js"
 
 export async function createCard(req: Request, res: Response) {
-    const { id } = res.locals.company
     const { emplyeeId, type } = req.body
     const employee = await cardServices.checkCard(emplyeeId, type)
     const createdCard = await cardServices.createCard(employee, type)
@@ -14,8 +13,9 @@ export async function createCard(req: Request, res: Response) {
 
 export async function activateCard(req: Request, res: Response) {
     const cardInfo = req.body
+    const activated = false
     const cardDb = await cardServices.validCard(cardInfo)
-    await cardServices.checkCardActivated(cardDb)
+    await cardServices.checkCardActivated(cardDb,activated)
     await cardServices.checkCardSecurityCode(cardInfo, cardDb)
     await cardServices.activateCard(cardInfo)
     res.sendStatus(200)
@@ -36,5 +36,13 @@ export async function unlockCard(req: Request, res: Response) {
     await cardServices.verifyPassword(cardInfo, cardDb)
     await cardServices.checkBlocked(cardDb, blockedCard)
     await cardServices.changeBlocked(cardInfo, blockedCard)
+    res.sendStatus(200)
+}
+export async function rechargeCard(req: Request, res:Response) {
+    const cardInfo =  req.body   
+    const activated = true
+    const cardDb = await cardServices.validCard(cardInfo)
+    await cardServices.checkCardActivated(cardDb, activated)
+    await cardServices.insertRecharge(cardInfo)
     res.sendStatus(200)
 }

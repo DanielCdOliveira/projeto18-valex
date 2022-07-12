@@ -58,13 +58,23 @@ export async function validCard(cardInfo:any) {
     }
     return card
 }
-export async function checkCardActivated(cardDb: any) {
-    if (cardDb.password) {
+export async function checkCardActivated(cardDb: any, activated: boolean) {
+    if(activated){
+        if(!cardDb.password){
+            throw {
+                type: "unauthorized",
+                message: "card not activated"
+            }
+        }
+    }else{
+         if (cardDb.password) {
         throw {
             type: "unauthorized",
             message: "card already activated"
         }
     }
+    }
+   
 }
 export async function checkCardSecurityCode(cardInfo :any,cardDb: any) {
     const cryptr = new Cryptr(process.env.CRYPTKEY)
@@ -102,5 +112,8 @@ export async function verifyPassword(cardInfo: any, cardDb: any) {
 }
 export async function changeBlocked(cardInfo: any, blockedCard: boolean) {
     await cardRepository.changeBlocked(cardInfo.cardId,blockedCard )
+}
+export async function insertRecharge(cardInfo: any) {
+    await cardRepository.insertRecharge(cardInfo)
 }
 
