@@ -131,6 +131,16 @@ export async function activateCardDb(cardId :number, encryptedPassword :string) 
    
 }
 
+export async function changeBlocked(cardId :number, blockedCard :boolean) {
+  console.log("query", blockedCard);
+  
+  const result = await connection.query(`
+  UPDATE cards
+  SET  "isBlocked" = $1
+  WHERE
+  id = $2
+  `,[blockedCard, cardId])
+}
 export async function remove(id: number) {
   connection.query<any, [number]>("DELETE FROM cards WHERE id=$1", [id]);
 }

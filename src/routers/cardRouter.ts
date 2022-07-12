@@ -8,6 +8,8 @@ const cardRouter = Router()
 
 cardRouter.post("/card/creation",verifyToken ,cardController.createCard)
 cardRouter.post("/card/activate",schemaVerifier(activateSchema) ,cardController.activateCard)
+cardRouter.post("/card/block" ,cardController.blockCard)
+cardRouter.post("/card/unlock" ,cardController.unlockCard)
 
 
 export default cardRouter

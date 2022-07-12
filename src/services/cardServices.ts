@@ -76,11 +76,31 @@ export async function checkCardSecurityCode(cardInfo :any,cardDb: any) {
         }
     }
 }
-
 export async function activateCard(cardInfo: any) {
     const cryptr = new Cryptr(process.env.CRYPTKEY)
     const encryptedPassword = cryptr.encrypt(cardInfo.password)
-    console.log(typeof encryptedPassword);
-    
     await cardRepository.activateCardDb(cardInfo.cardId, encryptedPassword)
 }
+export async function checkBlocked(cardDb: any, blockedCard: boolean) {
+    if (cardDb.isBlocked === blockedCard) {
+        throw {
+            type: "unauthorized",
+            message: `card already ${blockedCard?"blocked":"unlocked"}`
+        }
+    }
+}
+export async function verifyPassword(cardInfo: any, cardDb: any) {
+    const cryptr = new Cryptr(process.env.CRYPTKEY)
+    const passwordDb = cryptr.decrypt(cardDb.password)
+    if(cardInfo.password !== passwordDb){
+        throw {
+            type: "unauthorized",
+            message: "invalid card password"
+        }
+    }
+
+}
+export async function changeBlocked(cardInfo: any, blockedCard: boolean) {
+    await cardRepository.changeBlocked(cardInfo.cardId,blockedCard )
+}
+
