@@ -11,6 +11,7 @@ cardRouter.post("/card/activate",schemaVerifier(activateSchema) ,cardController.
 cardRouter.put("/card/block" ,cardController.blockCard)
 cardRouter.put("/card/unlock" ,cardController.unlockCard)
 cardRouter.post("/card/recharge",verifyToken,schemaVerifier(rechargeSchema),cardController.rechargeCard)
+cardRouter.get("/cards/:id",cardController.getCardInfo)
 
 
 export default cardRouter

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import *  as cardServices from "../services/cardServices.js"
 import * as cardRepository from "../repositories/cardRepository.js"
+import * as utils from "../utils/utils.js"
 
 export async function createCard(req: Request, res: Response) {
     const { employeeId, type } = req.body
@@ -45,4 +46,16 @@ export async function rechargeCard(req: Request, res:Response) {
     await cardServices.checkCardActivated(cardDb, activated)
     await cardServices.insertRecharge(cardInfo)
     res.sendStatus(201)
+}
+export async function getCardInfo(req: Request, res:Response) {
+    const cardId = parseInt(req.params.id)
+    const cardExists = await cardRepository.findById(cardId)
+    if(!cardExists){
+        throw{
+            type:"not_found",
+            message:"card not found"
+        }
+    }
+    const result = await utils.getHistory(cardId)
+    res.status(200).send(result)
 }
