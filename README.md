@@ -189,7 +189,7 @@ POST /sign-up
 - headers:
 
 ```json
-{{
+  {
   "name": "x-api-key",
   "value": "zadKLNx.DzvOVjQH01TumGl2urPjPQSxUbf67vs0"
   }
