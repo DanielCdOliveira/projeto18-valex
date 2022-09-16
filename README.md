@@ -5,7 +5,7 @@
 <hr>
 <h4 align=center>A benefits Card API</h4>
 <h4 align=center>The API will be responsible for creating, reloading, activating, as well as processing purchases.</h4>
-<h4 align=center>First project made with TypeScript</h4>
+<h4 align=center>First project made with TypeScript and doing manual testing with ThunderClient</h4>
 <hr>
 
 # DATABASE
